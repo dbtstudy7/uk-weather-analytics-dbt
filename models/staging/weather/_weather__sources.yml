@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: "Raw data loaded from Open-Meteo weather API"
+    tables:
+      - name: weather_daily
+        description: "Daily weather observations for 5 UK cities"
+        columns:
+          - name: id
+            description: "Unique row identifier"
+          - name: city_name
+            description: "Name of the UK city"
+          - name: date
+            description: "Date of the weather observation"
+          - name: temp_max
+            description: "Maximum temperature in Celsius"
+          - name: temp_min
+            description: "Minimum temperature in Celsius"
+          - name: temp_mean
+            description: "Mean temperature in Celsius"
+          - name: precipitation
+            description: "Total precipitation in mm"
+          - name: windspeed_max
+            description: "Maximum wind speed in km/h"
+          - name: weathercode
+            description: "WMO weather code"

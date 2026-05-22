@@ -1,0 +1,6 @@
+city_name,country,region,latitude,longitude,population,is_capital
+London,England,South East,51.5074,-0.1278,9648110,true
+Manchester,England,North West,53.4808,-2.2426,553230,false
+Birmingham,England,West Midlands,52.4862,-1.8904,1144900,false
+Edinburgh,Scotland,Scotland,55.9533,-3.1883,524930,true
+Cardiff,Wales,Wales,51.4816,-3.1791,362756,true
