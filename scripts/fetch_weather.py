@@ -50,15 +50,16 @@ def fetch_city_weather(city):
         return None
 
 # ── Connect to Postgres ─────────────────────────
+import os
+
 def get_connection():
     return psycopg2.connect(
-        host="localhost",
+        host=os.environ.get("DB_HOST", "localhost"),
         database="postgres",
         user="postgres",
-        password="Jaya@123",
+        password=os.environ.get("DB_PASSWORD", "Jaya@123"),
         port=5432
     )
-
 # ── Create raw table ────────────────────────────
 def create_table(conn):
     cur = conn.cursor()

@@ -1,10 +1,6 @@
 -- fct_weather_daily.sql
 -- Purpose: daily weather fact table
 -- Grain: one row per city per day
--- Business questions answered:
---   - What was London's temperature on a specific date?
---   - How many rainy days did Manchester have?
---   - Which city was coldest last week?
 
 with weather as (
 
@@ -19,12 +15,25 @@ final as (
         city_name,
         date,
 
-        -- Temperature measures
-        -- Fahrenheit conversions using macro
-{{ celsius_to_fahrenheit('temp_max') }}    as temp_max_f,
-{{ celsius_to_fahrenheit('temp_min') }}    as temp_min_f,
-{{ celsius_to_fahrenheit('temp_mean') }}   as temp_mean_f,
-        round((temp_max - temp_min)::numeric, 2)   as temp_range_c,
+        -- Temperature in Celsius
+        temp_max                                    as temp_max_c,
+        temp_min                                    as temp_min_c,
+        temp_mean                                   as temp_mean_c,
+        round((temp_max - temp_min)::numeric, 2)    as temp_range_c,
+
+        -- Temperature in Fahrenheit using macro
+        {{ celsius_to_fahrenheit('temp_max') }}     as temp_max_f,
+        {{ celsius_to_fahrenheit('temp_min') }}     as temp_min_f,
+        {{ celsius_to_fahrenheit('temp_mean') }}    as temp_mean_f,
+
+        -- Temperature category
+        case
+            when temp_mean >= 20 then 'Hot'
+            when temp_mean >= 15 then 'Warm'
+            when temp_mean >= 10 then 'Mild'
+            when temp_mean >= 5  then 'Cool'
+            else 'Cold'
+        end                                         as temp_category,
 
         -- Precipitation
         precipitation_mm,
@@ -41,15 +50,6 @@ final as (
             when windspeed_max_kmh >= 15 then 'Breezy'
             else 'Calm'
         end                                         as wind_category,
-
-        -- Temperature category
-        case
-            when temp_mean >= 20 then 'Hot'
-            when temp_mean >= 15 then 'Warm'
-            when temp_mean >= 10 then 'Mild'
-            when temp_mean >= 5  then 'Cool'
-            else 'Cold'
-        end                                         as temp_category,
 
         -- Date parts
         extract(month from date)                    as month_num,
