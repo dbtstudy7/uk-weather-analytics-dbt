@@ -39,6 +39,26 @@ jobs:
           pip install dbt-postgres
           pip install requests psycopg2-binary
 
+      - name: Create dbt profiles directory
+        run: mkdir -p ~/.dbt
+
+      - name: Create profiles.yml
+        run: |
+          cat > ~/.dbt/profiles.yml << 'EOF'
+          weather_analysis:
+            target: dev
+            outputs:
+              dev:
+                type: postgres
+                host: localhost
+                user: postgres
+                password: postgres
+                port: 5432
+                dbname: postgres
+                schema: weather_dev
+                threads: 4
+          EOF
+
       - name: Install dbt packages
         run: dbt deps
 
@@ -50,5 +70,3 @@ jobs:
 
       - name: Run dbt build
         run: dbt build
-        env:
-          DBT_POSTGRES_PASSWORD: postgres
